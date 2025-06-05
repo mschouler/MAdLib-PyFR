@@ -1,0 +1,27 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PEP 582
+__pypackages__/
+
+# Packaging
+*.egg-info/
+
+# Environments
+.venv
+
+# results
+examples/*/*.csv
+examples/*/*.log
+examples/*/*.series
+examples/*/output*
+tmp
+
+# mypy
+.mypy_cache/
+.pytest_cache/
+
+# vscode
+.vscode

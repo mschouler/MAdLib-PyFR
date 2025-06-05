@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools >= 46.4.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "madlib-pyfr"
+version = "0.0.1"
+description = "MAdLib-PyFR is a basic framework for unsteady anisotropic mesh adaptation."
+authors = [
+  {name = "Marc Schouler", email = "marc.schouler@sorbonne-universite.fr"},
+]
+requires-python = ">=3.11"
+dependencies = [
+    "gmsh>=4.13.1",
+    "pandas>=2.2.3"
+]
+
+[tool.setuptools.packages.find]
+include = ["madlib_pyfr"]
