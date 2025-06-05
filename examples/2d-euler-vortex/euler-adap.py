@@ -94,8 +94,7 @@ def main():
     """
     Couples PyFR with MAdLib.
     """
-    parser = argparse.ArgumentParser(
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("-m", "--mesh", type=str, help="gmsh file", required=True)
     parser.add_argument("-i", "--ini", type=str, help="PyFR input file", required=True)
     parser.add_argument("-n", "--nite", type=int, help="the number of iterations", default=10)
