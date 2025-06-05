@@ -566,7 +566,7 @@ endif()
 
 # ----- VTK -----
 # Set the path to the VTK folder
-set(VTK_DIR "/home/mschouler/Documents/Sorbonne/vtk/build")
+set(VTK_DIR "/path/to/vtk/build")
 
 # Find VTK package
 find_package(VTK)

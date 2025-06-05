@@ -25,7 +25,7 @@ MAdLib-PyFR/
 ```
 
 ## Installation
-The coupling of PyFR with MAdlib relies on the following main dependencies:
+The coupling of PyFR with MAdLib relies on the following main dependencies:
 
 - `VTK`: the visualization toolkit software can be downloaded from its website [here](https://vtk.org/),
 - `MAdLib`: the mesh adaptation software can be installed from its website [here](https://sites.uclouvain.be/madlib/),
@@ -112,7 +112,7 @@ endif()
 
 Such modified version of `CMakeLists.txt` is available in `MAdLib-PyFR/madlib`:
 ```sh
-cp ../MAdLib-PyFR/madlib/CMakeLists.txt MAdLib/trunk/
+cp ../MAdLib-PyFR/madlib/CMakeLists.txt trunk/
 ```
 
 The path to the VTK build dir can be set to the user's path: `set(VTK_DIR "/path/to/vtk/build")`.
@@ -121,10 +121,10 @@ As part of its build, MAdLib also compiles all testcases which contain our custo
 
 The use-case folder can be updated at once by running:
 ```sh
-cp -r ../MAdLib-PyFR/madlib/Testcases/* MAdLib/trunk/Testcases/
+cp -r ../MAdLib-PyFR/madlib/Testcases/* trunk/Testcases/
 ```
 
-MAdlib can now be built:
+MAdLib can now be built:
 ```sh
 cd trunk
 mkdir build && cd build
@@ -192,7 +192,7 @@ pip install -e .
 ```
 
 ## Getting started
-If the installation proceeded correctly, the user can navigate the examples, each on is accompanied by its own piece of documentation:
+If the installation proceeded correctly, the user can navigate the examples, each one is accompanied by its own piece of documentation:
 
 - [2d Euler vortex](examples/2d-euler-vortex/): a simple use-case based on PyFR most basic example,
 - [2d incompressible cylinder](examples/2d-inc-cylinder/): a more complicated use-case compatible with high-order meshes, averaged and automatic adaptation,
