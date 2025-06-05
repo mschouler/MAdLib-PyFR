@@ -65,7 +65,7 @@ And the code can finally be built in parallel with 8 cores:
 cmake --build . -j 8
 ```
 
-**Note**: this last step may take a long time to execute depending on the specified number of cores.
+📝 **Note**: this last step may take a long time to execute depending on the specified number of cores.
 
 ### MAdLib
 You can now move back to the working directory and clone the present repository:
@@ -141,9 +141,9 @@ and go back to the previous building command.
 
 At that point you should have a working MAdLib install with a bunch of new executables contained in `MAdLib/trunk/build/Testcases/`. 
 
-**Note**: assuming that no modification is made to MAdLib's core code, all Testcases code can directly be recompiled via the `make install` command. This will automatically update the corresponding executables.
+💡 **Tip**: assuming that no modification is made to MAdLib's core code, all Testcases code can directly be recompiled via the `make install` command. This will automatically update the corresponding executables.
 
-**Note**: as of June 2025, the user may want to install the development branch that should soon support periodic boundary conditions:
+📝 **Note**: as of June 2025, the user may want to install the development branch that should soon support periodic boundary conditions:
 ```sh
 svn co https://svn.cenaero.be/MAdLib/branches/PeriodicAdaptation.29.01.2025
 ```
@@ -205,14 +205,14 @@ The adaptation process is based upon the `Adapter` class which. For each adaptat
 2. The mesh is converted from .msh to .pyfrm format (see `import_mesh`)
 3. The .ini file is updated to produce solutions in the appropriate time interval (see `update_ini`)
 
-**Note**: for each step, PyFR will produce `K` solutions files (see figure below).
+📝 **Note**: for each step, PyFR will produce `K` solutions files (see figure below).
 
 4. PyFR is executed from scratch and the initial mesh or restarted from the previous solution and the last generated mesh (see `run_pyfr`)
 5. All solution files are converted from .pyfrs to .vtu format (see `export_vtk`)
 6. The solution files are processed to produces derived quantities such as the velocity magnitude (see `compute_vtk`)
 7. The solution files to be used by MAdLib to compute the metric-field are listed in a text file and passed to MAdLib as one of its inputs (see `adap_madlib`)
 
-**Note**: this last step generates an adapted mesh in .msh format. In addition, the mesh complexity is read following MAdLib's first execution. It is then multiplied by a given complexity factor and added to the execution command because specifying the complexity target to MAdLib is necessary to ensure the mesh fineness control across all iterations.
+📝 **Note**: this last step generates an adapted mesh in .msh format. In addition, the mesh complexity is read following MAdLib's first execution. It is then multiplied by a given complexity factor and added to the execution command because specifying the complexity target to MAdLib is necessary to ensure the mesh fineness control across all iterations.
 
 8. Due to Gmsh version format constraints, the adapted mesh is reformatted (see `edit_gmsh`) and converted to .pyfrm format
 9. The last solution is re-interpolated on the newly produced mesh (see `resample_pyfr`) which will generate a new solution file in .pyfrs format
@@ -225,4 +225,4 @@ From the adaptation perspective, the timescale is illustrated on the figure belo
 
 If the adaptation is not instantaneous, the metric-field will combine $K$ solution files produced every $\Delta t_\text{sol}$ time steps over the last $\Delta t_\text{adap}$. Otherwise, it will only compute the metric-field from the last solution file.
 
-**Note**: in PyFR,  $\Delta t_\text{sol}$ corresponds to `dt-out` in  the solution plugin writer which defines when to write solution files. It is different from the actual timestep $\Delta t$ which is used by the solver defined as `dt` in the solver time integrator.
+⚠️ **Warning**: in PyFR,  $\Delta t_\text{sol}$ corresponds to `dt-out` in  the solution plugin writer which defines when to write solution files. It is different from the actual timestep $\Delta t$ which is used by the solver defined as `dt` in the solver time integrator.
