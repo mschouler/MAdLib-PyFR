@@ -15,6 +15,7 @@ __pypackages__/
 # results
 examples/*/*.csv
 examples/*/*.log
+examples/*/*.msh
 examples/*/*.series
 examples/*/output*
 tmp
