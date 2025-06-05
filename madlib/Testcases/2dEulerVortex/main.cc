@@ -48,6 +48,13 @@ int main(int argc, char* argv[]){
 #endif
   
   int result = 0;
+
+  // input check
+  if (argc != 4)
+  {
+      std::cerr << "Usage: " << argv[0] << " path/to/mesh.msh path/to/sol.vtu path/to/output.msh" << std::endl;
+      return EXIT_FAILURE;
+  }
   
   // initialize empty mesh and solution field
   pGModel mod = NULL;
@@ -74,13 +81,6 @@ int main(int argc, char* argv[]){
   
   // combine mesh and field
   SolAtVertices *sol = new SolAtVertices(msh, logFld, 1, "Solution");
-
-  // read solution file with vtu loader
-  if (argc != 4)
-    {
-        std::cerr << "Usage: " << argv[0] << " path/to/mesh.msh path/to/sol.vtu path/to/output.msh" << std::endl;
-        return EXIT_FAILURE;
-    }
 
   // build vtk reader from the .vtu file
   std::string filename = argv[2];
