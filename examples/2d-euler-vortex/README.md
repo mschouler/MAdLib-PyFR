@@ -27,7 +27,7 @@ The adaptation script can then be executed:
 python3 euler-adap.py --mesh euler-vortex.msh --ini euler-vortex.ini --nite 8
 ```
 
-**Note**: as of June 2025, MAdLib still experiences issues with periodic boundaries. For this example, periodic boundaries are frozen which results in small elements at the upper boundary as the vortex approaches it. Ultimately, this causes the computation to fail which is why the number of iterations should be kept below 9.
+📝 **Note**: as of June 2025, MAdLib still experiences issues with periodic boundaries. For this example, periodic boundaries are frozen which results in small elements at the upper boundary as the vortex approaches it. Ultimately, this causes the computation to fail which is why the number of iterations should be kept below 9.
 
 Results are saved in the `output/out_N` directories and can be visualized with Paraview by loading `euler-vortex.vtu.series`. The .gif below illustrates the reference and adapted solutions obtained with unstructured meshes of order 1:
 <p float="left">
@@ -92,3 +92,5 @@ options:
 ```
 
 It relies on the `EulerAdapter` class which is a simplification of the full `Adapter` class that avoids using some unnecessary features of the adaptation process. Namely, this use-case only performs instantaneous adaptation directly from the density field.
+
+⚠️ **Warning**: the path to the MAdLib adaptation script is hardcoded at the top of `euler-adap.py` and may need editing to match the user's environment. This avoids to specify it manually as an input or to use a configuration file just for this command.
