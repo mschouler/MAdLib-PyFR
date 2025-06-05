@@ -174,15 +174,10 @@ It can finally be installed in a virtual environment that will be shared with th
 cd MAdLib-PyFR
 python3 -m venv pyfr-venv
 source pyfr-venv/bin/activate
-echo "pip install pyfr"
-```
-
-As of June 2025, the adaptation requires features available in the develop branch of PyFR:
-```sh
 pip install "git+https://github.com/PyFR/PyFR.git@develop"
 ```
 
-This last command will install various Python packages also useful to the adaptation framework.
+This last command installs the `develop` branch of PyfR which contains necessary features unavailable in `master` (as of June 2025) and various Python packages also useful to the adaptation framework.
 
 ### MAdLib-PyFR
 
