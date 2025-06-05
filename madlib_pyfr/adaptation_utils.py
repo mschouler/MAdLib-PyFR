@@ -55,13 +55,13 @@ def get_files(outdir: str, ext: str, next: str = "") -> list[str]:
     return sorted_list
 
 
-def write_series(sol_pattern: str, sol_dict: dict[int, list[str]], outdir: str) -> str:
+def write_series(sol_pattern: str, sol_list: list[str], outdir: str) -> str:
     """
     Write a .series file and returns its path.
     """
     content: dict = {"file-series-version": "1.0."}
     content["files"] = [
-        {"name": sname, "time": tid} for tid, sname in sol_dict.items()
+        {"name": sname, "time": sid} for sid, sname in enumerate(sol_list)
     ]
     json_content = json.dumps(content, indent=4)
     outfile = os.path.join(outdir, f"{sol_pattern}.vtu.series")

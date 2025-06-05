@@ -85,8 +85,8 @@ class EulerAdapter(Adapter):
         vtk_file_list = get_files(self.outdir, ".vtu", "-ext")
         logger.debug(f"vtk_file_list: {vtk_file_list}")
         # the first step contains two solutions: 0.vtu and 1.vtu
-        for i, file in enumerate(vtk_file_list[::-1]):
-            self.dvtk[self.step - i] = file
+        if not vtk_file:
+            self.dvtk[self.step].extend(vtk_file_list)
         return vtk_file_list[-1]
 
 
@@ -123,7 +123,8 @@ def main():
     logger.info(f"\nadaptation finished in {adap_duration:.2f} sec.")
 
     # create .series file for paraview
-    series_file = write_series(mesh_adapter.sol_pattern, mesh_adapter.dvtk, os.getcwd())
+    vtk_list = sum(mesh_adapter.dvtk.values(), [])
+    series_file = write_series(mesh_adapter.sol_pattern, vtk_list, os.getcwd())
     logger.info(f"\nproduced series file: {series_file}")
 
     # write execution time statistics

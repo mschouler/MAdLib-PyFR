@@ -70,7 +70,7 @@ class Adapter:
         self.sol_file: str = sol_file if sol_file else self.get_sol_file()
 
         # files tracker
-        self.dvtk: dict[int, str] = {}
+        self.dvtk: dict[int, list[str]] = {}
         self.dmsh: dict[int, str] = {}
         self.dgmsh: dict[int, str] = {step: self.gmsh_file}
         self.dsol: dict[int, str] = {step: self.sol_file}
@@ -206,7 +206,7 @@ class Adapter:
             # this avoids duplicates as the method is called twice
             # on the same output directory
             if not vtk_file:
-                self.dvtk[self.step] = os.path.join(self.outdir, outfile)
+                self.dvtk[self.step].append(os.path.join(self.outdir, outfile))
         return os.path.join(self.outdir, outfile)
 
     @time_function
@@ -263,7 +263,7 @@ class Adapter:
 
     def reorder_nodes(self, mesh_file_content: list[str]):
         """
-        Makes the node index contiguous and update the elements acoordingly.
+        Makes the node index contiguous and update the elements accordingly.
 
         Note: this is required by PyFR with point sampling.
         """
@@ -278,9 +278,8 @@ class Adapter:
             elif line.strip() == "$EndElements":
                 end_elt_idx = idx
         # get number of nodes and ids
-        _ = int(mesh_file_content[node_idx + 1].strip())
-        id_nodes = [int(n.strip().split()[0])
-                    for n in mesh_file_content[node_idx + 2:end_node_idx]]
+        id_nodes = {n.strip().split()[0]: str(idx + 1)
+                    for idx, n in enumerate(mesh_file_content[node_idx + 2:end_node_idx])}
         # update node ids
         for idx, line in enumerate(mesh_file_content[node_idx + 2:end_node_idx]):
             new_line = " ".join([str(idx + 1)] + line.strip().split()[1:])
@@ -291,8 +290,7 @@ class Adapter:
             nb_node = (len(line.strip().split())
                        - (3 + int(line.strip().split()[2])))
             # compute new nodes ids
-            new_nodes_id = [str(id_nodes.index(int(nid)) + 1)
-                            for nid in line.strip().split()[-nb_node:]]
+            new_nodes_id = [id_nodes[nid] for nid in line.strip().split()[-nb_node:]]
             # update line
             new_line = " ".join(line.strip().split()[:-nb_node] + new_nodes_id)
             mesh_file_content[elt_idx + 2 + idx] = new_line
@@ -362,6 +360,7 @@ class Adapter:
         """
         if not (ext_vtk_file and new_sol_file and ini_file):
             self.step += 1
+            self.dvtk[self.step] = []
 
             self.outdir = self.get_outdir()
             os.makedirs(self.outdir, exist_ok=True)
@@ -491,6 +490,7 @@ class Adapter:
             return
 
         self.step += 1
+        self.dvtk[self.step] = []
 
         self.outdir = self.get_outdir()
         os.makedirs(self.outdir, exist_ok=True)
