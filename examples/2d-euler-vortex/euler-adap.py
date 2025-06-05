@@ -9,7 +9,7 @@ from subprocess import run
 
 logger = logging.getLogger(__name__)
 
-MADLIB = "/home/mschouler/Documents/Sorbonne/MAdLib_2_0_0/trunk/build/Testcases/2dEulerVortex"  # noqa
+MADLIB = "../../../MAdLib/trunk/build/Testcases/2dEulerVortex"
 
 
 class EulerAdapter(Adapter):
@@ -39,7 +39,7 @@ class EulerAdapter(Adapter):
         """
         Reads and returns the complexity of the mesh.
 
-        Note: for this is useless.
+        Note: for this example the complexity is not monitored.
         """
         return -1
 
