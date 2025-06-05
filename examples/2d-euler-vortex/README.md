@@ -4,7 +4,7 @@ This example comes from PyFR's original example (see [here](https://pyfr.readthe
 
 It has the following characteristics:
 
-- it relies on Euler's equations of motion,
+- it relies on Euler's equations,
 - it has periodic boundaries in each direction.
 
 ## Getting started
