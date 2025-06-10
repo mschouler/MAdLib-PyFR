@@ -61,7 +61,7 @@ options:
   -s, --structured      generates a structured mesh (default: False)
 ```
 
-The same script can be used to generate both structured and unstructured mesh of any order based on the options passed to it. This can be convenient to generate reference solutions with PyFR but be aware that structured meshes can not be used for anisotropic mesh adaptation.
+The same script can be used to generate both structured and unstructured meshes of any order based on the options passed to it. This can be convenient to generate reference solutions with PyFR but be aware that structured meshes can not be used for anisotropic mesh adaptation.
 
 
 ### MAdLIb script
@@ -73,7 +73,7 @@ The first two arguments are inputs, the third one is the script's output.
 
 The only specificity of the script lies in the `fixBoundaryEdges` function which freezes nodes on the domain boarders to preserve the periodic structure of the mesh.
 
-Finally, although this use-case adaptation script is compatible with any solution order, it uses the Hessian based algorithm to compute the metric-field. Strictly speaking, this means that it will not perform high-order adaptation regardless of the mesh and solution order (see the cylinder example for more information about that).
+Finally, although this use-case adaptation script is compatible with any solution order, it uses the Hessian based algorithm to compute the metric-field. Strictly speaking, this means that it will always use a "low-order" error estimate to compute the metric-field regardless of the mesh and solution order (see the cylinder example for more information).
 
 ### Coupling script
 The `euler-adap.py` script implements a the most basic coupling version of MAdLib and PyFR where the adaptation is run instantaneously for a few iterations:
