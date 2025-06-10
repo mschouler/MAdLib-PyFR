@@ -13,7 +13,7 @@ This use-case can be executed with the following steps:
 
 First, move to the example directory:
 ```sh
-cd examples/2d-euler-vortex
+cd examples/euler_vortex_2d
 ```
 
 The default mesh in the folder can be generated with the following command:
@@ -24,7 +24,7 @@ which should generate a first order unstructured mesh.
 
 The adaptation script can then be executed:
 ```sh
-python3 euler-adap.py --mesh euler-vortex.msh --ini euler-vortex.ini --nite 8
+python3 euler_adap.py --mesh euler-vortex.msh --ini euler-vortex.ini --nite 8
 ```
 
 📝 **Note**: as of June 2025, MAdLib still experiences issues with periodic boundaries. For this example, periodic boundaries are frozen which results in small elements at the upper boundary as the vortex approaches it. Ultimately, this causes the computation to fail which is why the number of iterations should be kept below 9.
@@ -50,8 +50,8 @@ options:
   -n NAME, --name NAME  mesh name (default: madlib_pyfr_mesh)
   -out OUTDIR, --outdir OUTDIR
                         mesh output directory (default:
-                        /home/mschouler/Documents/Sorbonne/MAdLib-PyFR/examples/2d-euler-
-                        vortex)
+                        /home/mschouler/Documents/Sorbonne/MAdLib-PyFR/examples/euler_
+                        vortex_2d)
   -f FORMAT, --format FORMAT
                         mesh format (default: msh)
   -k ORDER, --order ORDER
@@ -76,9 +76,9 @@ The only specificity of the script lies in the `fixBoundaryEdges` function which
 Finally, although this use-case adaptation script is compatible with any solution order, it uses the Hessian based algorithm to compute the metric-field. Strictly speaking, this means that it will always use a "low-order" error estimate to compute the metric-field regardless of the mesh and solution order (see the cylinder example for more information).
 
 ### Coupling script
-The `euler-adap.py` script implements a the most basic coupling version of MAdLib and PyFR where the adaptation is run instantaneously for a few iterations:
+The `euler_adap.py` script implements a the most basic coupling version of MAdLib and PyFR where the adaptation is run instantaneously for a few iterations:
 ```sh
-usage: euler-adap.py [-h] -m MESH -i INI [-o OUTDIR] [-n NITE] [-dt TIME_STEP]
+usage: euler_adap.py [-h] -m MESH -i INI [-o OUTDIR] [-n NITE] [-dt TIME_STEP]
 
 options:
   -h, --help            show this help message and exit
@@ -93,4 +93,4 @@ options:
 
 It relies on the `EulerAdapter` class which is a simplification of the full `Adapter` class that avoids using some unnecessary features of the adaptation process. Namely, this use-case only performs instantaneous adaptation directly from the density field.
 
-⚠️ **Warning**: the path to the MAdLib adaptation script is hardcoded at the top of `euler-adap.py` and may need editing to match the user's environment. This avoids to specify it manually as an input or to use a configuration file just for this command.
+⚠️ **Warning**: the path to the MAdLib adaptation script is hardcoded at the top of `euler_adap.py` and may need editing to match the user's environment. This avoids to specify it manually as an input or to use a configuration file just for this command.

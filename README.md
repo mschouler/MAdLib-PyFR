@@ -13,9 +13,9 @@ The project has the following structure:
 ```
 MAdLib-PyFR/
 ├── examples/         example folders
-│ └── 2d-euler-vortex
-│ ├── 2d-inc-cylinder
-│ ├── 2d-ogv-blade
+│ └── euler_vortex_2d
+│ ├── inc_cylinder_2d
+│ ├── ogv_blade_2d
 ├── madlib/           files and folder to be copied to MAdLib's source code
 │ ├── Testcases
 │ └── CMakeLists.txt
@@ -189,9 +189,9 @@ pip install -e .
 ## Getting started
 If the installation proceeded correctly, the user can navigate the examples, each one is accompanied by its own piece of documentation:
 
-- [2d Euler vortex](examples/2d-euler-vortex/): a simple use-case based on PyFR most basic example,
-- [2d incompressible cylinder](examples/2d-inc-cylinder/): a more complicated use-case compatible with high-order meshes, averaged and automatic adaptation,
-- [2d outlet guide vane compressor blade](examples/2d-ogv-blade/): a turbomachinery use-case compatible with high-order meshes, averaged and automatic adaptation.
+- [2d Euler vortex](examples/euler_vortex_2d/): a simple use-case based on PyFR most basic example,
+- [2d incompressible cylinder](examples/inc_cylinder_2d/): a more complicated use-case compatible with high-order meshes, averaged and automatic adaptation,
+- [2d outlet guide vane compressor blade](examples/ogv_blade_2d/): a turbomachinery use-case compatible with high-order meshes, averaged and automatic adaptation.
 
 ## Adaptation process
 The adaptation process is based upon the `Adapter` class which. For each adaptation iteration, goes through the following steps (see `adaptation_step`):

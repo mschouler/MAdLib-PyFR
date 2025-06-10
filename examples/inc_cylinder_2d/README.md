@@ -13,7 +13,7 @@ This use-case can be executed with the following steps:
 
 First, move to the example directory:
 ```sh
-cd examples/2d-inc-cylinder
+cd examples/inc_cylinder_2d
 ```
 
 The default mesh in the folder can be generated with the following command:
@@ -24,7 +24,7 @@ which should generate a first order unstructured mesh.
 
 The adaptation script can then be executed:
 ```sh
-python3 cylinder-adap.py --config inc-cylinder-inst.json
+python3 cylinder_adap.py --config inc-cylinder-inst.json
 ```
 
 Results are saved in the `output/out_N` directories and can be visualized with Paraview by loading `inc-cylinder.vtu.series`. The .gif below illustrates the evolution of the mesh and velocity magnitude for an instantaneous adaptation process triggered every unit of time:
@@ -46,8 +46,8 @@ options:
   -n NAME, --name NAME  mesh name (default: madlib_pyfr_mesh)
   -out OUTDIR, --outdir OUTDIR
                         mesh output directory (default:
-                        /home/mschouler/Documents/Sorbonne/MAdLib-PyFR/examples/2d-inc-
-                        cylinder)
+                        /home/mschouler/Documents/Sorbonne/MAdLib-PyFR/examples/inc_
+                        cylinder_2d)
   -f FORMAT, --format FORMAT
                         mesh format (default: msh)
   -k ORDER, --order ORDER
@@ -99,9 +99,9 @@ Finally, although this use-case adaptation script is compatible with any solutio
 The `2dIncCylinderHO/main.cc` adaptation script is an enhanced version of the `solAnisoAdaptation2DHO` example. It follows exactly the same structure as `2dIncCylinder/main.cc` except that it uses the [log-simplex algorithm](https://www.sciencedirect.com/science/article/pii/S0021999124000238) to compute the metric-field. This means that it will use an error estimate consistent with the mesh and solution order.
 
 ### Coupling script
-The `cylinder-adap.py` script implements the most complete coupling version of MAdLib and PyFR:
+The `cylinder_adap.py` script implements the most complete coupling version of MAdLib and PyFR:
 ```sh
-usage: cylinder-adap.py [-h] -c CONFIG [--mesh MESH] [--restart RESTART] [--sol SOL]
+usage: cylinder_adap.py [-h] -c CONFIG [--mesh MESH] [--restart RESTART] [--sol SOL]
                         [--verbose {DEBUG,INFO,WARNING,ERROR,CRITICAL}]
 
 options:
@@ -132,7 +132,7 @@ The `VTKProcessor/main.cc` script is pretty straightforward. It loads a solution
 ## To go further
 Although quite basic, this use-case demonstrates interesting features of unsteady mesh adaptation. Considering reference solutions obtained with a third order coarse mesh and a first order fine mesh, the `inc-cylinder.json` configuration file can be used to perform an automatic adaptation. It can be executed with the command below:
 ```sh
-python3 cylinder-adap.py --config inc-cylinder.json --mesh inc-cylinder.json --sol output-P1/inc-cylinder-50.00.pyfrs
+python3 cylinder_adap.py --config inc-cylinder.json --mesh inc-cylinder.json --sol output-P1/inc-cylinder-50.00.pyfrs
 ```
 
 ![Inc Cylinder APC](../../docs/Figs/cylinder-APC-velocity.gif)
