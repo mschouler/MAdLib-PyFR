@@ -1,0 +1,36 @@
+{
+    "mode": "APC",
+    "msh_file": "inc-cylinder.msh",
+    "outdir": "output-APC/out",
+    "madlibexe": "../../../MAdLib/trunk/build/Testcases/2dIncCylinder",
+    "vtkexe": "../../../MAdLib/trunk/build/Testcases/VTKProcessor",
+    "pyfr": {
+        "options": {
+            "-b": "cuda"
+        },
+        "ini_file": "inc-cylinder.ini",
+        "t0": 50.0,
+        "tf": 53.0,
+        "dt": [0.01],
+        "pseudo_dt": [0.001],
+        "dt_sol": 0.6,
+        "K": 5,
+        "extra_dt": 10.0,
+        "extra_dt_sol": 1.0,
+        "ftt": 4300,
+        "statistical_criteria": {
+            "max_ftt": 1,
+            "files": ["forces.csv"],
+            "keys": [["px", "vx"]],
+            "criteria": 1
+        }
+    },
+    "madlib": {
+        "options": {
+            "--maxgrad": "1.1",
+            "--metric": "mean"
+        },
+        "timeout": 10.0,
+        "cmp_factor": 1.1
+    }
+}

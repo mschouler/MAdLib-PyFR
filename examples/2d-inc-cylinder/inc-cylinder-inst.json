@@ -1,0 +1,27 @@
+{
+    "msh_file": "inc-cylinder.msh",
+    "outdir": "output/out",
+    "madlibexe": "../../../MAdLib/trunk/build/Testcases/2dIncCylinder",
+    "vtkexe": "../../../MAdLib/trunk/build/Testcases/VTKProcessor",
+    "pyfr": {
+        "options": {
+            "-b": "cuda"
+        },
+        "ini_file": "inc-cylinder.ini",
+        "t0": 0.0,
+        "tf": 100.0,
+        "dt": [0.01],
+        "pseudo_dt": [0.001],
+        "dt_sol": 1.0,
+        "K": 1,
+        "extra_dt": 1.0,
+        "extra_dt_sol": 1.0
+    },
+    "madlib": {
+        "options": {
+            "--maxgrad": "1.1"
+        },
+        "timeout": 10.0,
+        "cmp_factor": 1.0
+    }
+}
