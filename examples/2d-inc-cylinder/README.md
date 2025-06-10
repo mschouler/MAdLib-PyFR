@@ -168,9 +168,9 @@ It is also worth mentioning that all adaptation procedure come with their own co
 The computational cost per task for each approach is illustrated on the following figures:
 
 <p float="left">
-  <img src="../../docs/Figs/cylinder-pie-inst.png" width="33%" />
-  <img src="../../docs/Figs/cylinder-pie-mean.png" width="33%" /> 
-  <img src="../../docs/Figs/cylinder-pie-apc.png" width="33%" /> 
+  <img src="../../docs/Figs/cylinder-pie-inst.png" height=300 />
+  <img src="../../docs/Figs/cylinder-pie-mean.png" height=300 /> 
+  <img src="../../docs/Figs/cylinder-pie-apc.png" height=300 /> 
 </p>
 
 📝 **Note**: although PyFR point sampler has proved sensitive to the mesh adaptation (in spite of the node reordering), field sensors like any velocity component can be used in place of a global quantity such as the drag force. To do so:
