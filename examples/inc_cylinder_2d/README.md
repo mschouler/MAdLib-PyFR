@@ -180,8 +180,8 @@ The computational cost per task for each approach is illustrated on the followin
 ```json
 "statistical_criteria": {
     "max_ftt": 1,
-    "files": ["sensors-1.csv", "sensors-2.csv"],
-    "keys": [["u"], ["u"]],
+    "files": ["sensors-1.csv"],
+    "keys": [["u"]],
     "criteria": 1
 }
 ```
