@@ -38,6 +38,9 @@ class Adapter:
         pyfr = config["pyfr"].get("options", {})
         self.pyfr_opt: list[str] = [e for p in pyfr.items() for e in p]
         self.ini_file: str = config["pyfr"]["ini_file"]
+        # t0 the initial simulation time
+        self.t0: float = config["pyfr"].get("t0", 0.)
+        # t the current simulation time
         self.t: float = config["pyfr"].get("t0", 0.)
         self.tf: float = config["pyfr"]["tf"]
         # dt may be reduced if the simulation fails
@@ -61,7 +64,7 @@ class Adapter:
 
         # madlib options
         madlib = config["madlib"].get("options", {})
-        self.madlib_opt: list[str] = [e for p in madlib.items() for e in p]
+        self.madlib_opt: list[str] = [e for p in madlib.items() for e in p if e]
         self.timeout: float = config["madlib"].get("timeout", 5.)
         self.cmp_factor: float = config["madlib"].get("cmp_factor", 1)
         self.cmp: None | float = None
@@ -121,12 +124,13 @@ class Adapter:
         """
         return f"{self.t + self.K * self.dt_sol:{self.format}}"
 
-    def update_ini(self, final_time: float) -> tuple[str, str]:
+    def update_ini(self, final_time: float, filedata: str = "") -> tuple[str, str]:
         """
         Creates new .ini file from the template and returns its path.
         """
-        with open(self.ini_file, 'r') as file:
-            filedata = file.read()
+        if not filedata:
+            with open(self.ini_file, 'r') as file:
+                filedata = file.read()
         # Replace the target string
         filedata = filedata.replace(
             "@initial_time", str(self.t)
@@ -549,15 +553,7 @@ class Adapter:
                 self.dt_sol
             )
             # compute monitored values
-            QoI_sublist = []
-            for f, k in zip(self.stat_crit["files"], self.stat_crit["keys"]):
-                df = pd.read_csv(f)
-                # only compute the mean over the solutions in the last step
-                QoI_sublist.append(np.nanmean(
-                    df.loc[df["t"] >= t0][k],
-                    axis=0
-                ))
-            QoI_list.append(np.concatenate(QoI_sublist))
+            QoI_list.append(self.compute_QoI_sublist(t0))
             # compute error
             err = self.stat_cv(QoI_list)
             self.derror[self.step] = err
@@ -575,6 +571,20 @@ class Adapter:
         self.QoI_list.append(QoI_list[-1])
 
         return ext_vtk_file, new_sol_file, ini_file
+
+    def compute_QoI_sublist(self, t0: float) -> np.ndarray:
+        """
+        Returns the concatenated QoIs of the current step.
+        """
+        QoI_sublist = []
+        for f, k in zip(self.stat_crit["files"], self.stat_crit["keys"]):
+            df = pd.read_csv(f)
+            # only compute the mean over the solutions in the last step
+            QoI_sublist.append(np.nanmean(
+                df.loc[df["t"] >= t0][k],
+                axis=0
+            ))
+        return np.concatenate(QoI_sublist)
 
     def convergence(self) -> bool:
         """

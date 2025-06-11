@@ -9,10 +9,12 @@ import traceback
 from madlib_pyfr.adaptation_utils import set_logger, write_series
 from madlib_pyfr.adaptation import Adapter
 
+from typing import Type
+
 logger = logging.getLogger(__name__)
 
 
-def main():
+def main(AdapterType: Type[Adapter] = Adapter):
     """
     Couples PyFR with MAdLib.
     """
@@ -39,7 +41,7 @@ def main():
         config = json.load(jfile)
 
     # initialize Adapter
-    mesh_adapter = Adapter(config, step=args.restart, gmsh_file=args.mesh, sol_file=args.sol)
+    mesh_adapter = AdapterType(config, step=args.restart, gmsh_file=args.mesh, sol_file=args.sol)
 
     # adaptation loop
     nfail = 0
