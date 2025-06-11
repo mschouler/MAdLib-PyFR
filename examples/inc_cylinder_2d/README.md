@@ -86,6 +86,7 @@ Options:
   -xlen, --maxlen <val>  max length (default='-1')
   -nlen, --minlen <val>  min length (default='-1')
   -met, --metric <val>  metric combination method {'intersection', 'mean'} (default='intersection')
+  -fe, --freeze  freeze boundary edges (default='false')
 ```
 
 It is intended to first be called without the `--cmp` option which will results in the mesh complexity computation and the generation of a text file `cmp.txt` containing its value. Then, the complexity is specified explicitly by the adaptation script. Without this safety protocol, MAdLib recomputes it automatically and, due to some internal mechanisms, produces increasing complexity values which ultimately leads to refinement levels likely to jeopardize the numerical stability of PyFR.
@@ -119,10 +120,10 @@ Depending on the configuration file, the adaptation can be run instantaneously, 
 
 | Adaptation type | "mode"  | "pyfr" parameters | "madlib" parameters | stopping criterion |
 |-----------------|---------|-------------------|---------------------|--------------------|
-| instantaneous | "standard" (default) | "K": 1 | "--maxgrad": "1.1" | `t>tf` |
-| averaged (mean) | "standard" (default) | "K": XX | "--maxgrad": "1.1", "--metric": "mean" | `t>tf` |
-| averaged (intersection) | "standard" (default) | "K": XX | "--maxgrad": "1.1", "--metric": "intersection" | `t>tf` |
-| automatic (mean) | "APC" |  "K": XX, "statistical_criteria": {"max_ftt": XX, "files": ["XX.csv"], "keys": [["XX"]], "criteria": XX} |  "--maxgrad": "1.1", "--metric": "mean" | statistical criteria (see `convergence`) |
+| instantaneous | "standard" (default) | "K": 1 | "--maxgrad": "XX" | `t>tf` |
+| averaged (mean) | "average" | "K": XX | "--maxgrad": "XX", "--metric": "mean" | `t>tf` |
+| averaged (intersection) | "average" | "K": XX | "--maxgrad": "XX", "--metric": "intersection" | `t>tf` |
+| automatic (mean) | "APC" |  "K": XX, "statistical_criteria": {"max_ftt": XX, "files": ["XX.csv"], "keys": [["XX"]], "criteria": XX} |  "--maxgrad": "XX", "--metric": "mean" | statistical criteria (see `convergence`) |
 
 ### VTK script
 The `VTKProcessor/main.cc` script is pretty straightforward. It loads a solution file containing a `Velocity` field and computes the associated `VelocityMagnitude`. This enables MAdLib to use it as its sensor for the metric-field computation.
@@ -132,14 +133,14 @@ The `VTKProcessor/main.cc` script is pretty straightforward. It loads a solution
 ## To go further
 Although quite basic, this use-case demonstrates interesting features of unsteady mesh adaptation. Considering reference solutions obtained with a third order coarse mesh and a first order fine mesh, the `inc-cylinder.json` configuration file can be used to perform an automatic adaptation. It can be executed with the command below:
 ```sh
-python3 cylinder_adap.py --config inc-cylinder.json --mesh inc-cylinder.json --sol output-P1/inc-cylinder-50.00.pyfrs
+python3 cylinder_adap.py --config inc-cylinder.json --mesh inc-cylinder.msh --sol output-P1/inc-cylinder-50.00.pyfrs
 ```
 
 ![Inc Cylinder APC](../../docs/Figs/cylinder-APC-velocity.gif)
 
 📝 **Note**: as stated by `"t0": 50.0`, this adaptation procedure starts from the 50th solution timestamp of the first order reference solution.
 
-By changing the configuration file mode from `"APC"` to `"standard"`, by setting `"outdir"` to `"output-MEAN"`, `"extra_dt"` to `57.0`, the same configuration file can be used to perform an adaptation with metric-field mean integration.
+By changing the configuration file mode from `"APC"` to `"average"`, by setting `"outdir"` to `"output-MEAN"`, `"extra_dt"` to `57.0`, the same configuration file can be used to perform an adaptation with metric-field mean integration.
 
 ![Inc Cylinder MEAN](../../docs/Figs/cylinder-MEAN-velocity.gif)
 
@@ -160,7 +161,7 @@ It is also worth mentioning that all adaptation procedure come with their own co
 | Adaptation type | Execution time (sec.) |
 |-----------------|-----------------------|
 | instantaneous | 1153 |
-| averaged (mean) | 312 |
+| averaged (mean) | 321 |
 | automatic (mean) | 617 |
 
 ⚠️ **Warning**: as simulated times are not exactly the same for all three experiments, these estimates should be treated with caution.

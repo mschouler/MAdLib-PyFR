@@ -42,9 +42,10 @@ void printHelp() {
     std::cout << "  -nlen, --minlen <val>  min length (default='-1')\n";
     std::cout << "  -met, --metric <val>  metric combination method"
                  " {'intersection', 'mean'} (default='intersection')\n";
+    std::cout << "  -fe, --freeze  freeze boundary edges (default='false')\n";
 }
 
-//std::pair<bool, std::unordered_map<std::string, std::string>> parseArgs(int argc, char* argv[]) {
+
 std::unordered_map<std::string, std::string> parseArgs(int argc, char* argv[]) {
   /*
   Parses the input arguments and returns the extracted options.
@@ -61,6 +62,7 @@ std::unordered_map<std::string, std::string> parseArgs(int argc, char* argv[]) {
   options["maxlength"] = "-1";
   options["minlength"] = "-1";
   options["metric"] = "intersection";
+  options["freeze"] = "false";
   // arg parsing
   for (int i = 1; i < argc; i++) {
     std::string arg = argv[i];
@@ -112,6 +114,10 @@ std::unordered_map<std::string, std::string> parseArgs(int argc, char* argv[]) {
         options["metric"] = "intersection";
       std::cout << "INFO -- metric: " << options["metric"] << "\n";
     }
+    else if ((arg == "-fe" || arg == "--freeze")) {
+      options["freeze"] = "true";
+      std::cout << "INFO -- freeze boundary edges: " << options["freeze"] << "\n";
+    }
     else {
       std::ostringstream errorMsg;
       errorMsg<< "ERRROR -- unknown argument: " << arg << "\n\n";
@@ -124,6 +130,18 @@ std::unordered_map<std::string, std::string> parseArgs(int argc, char* argv[]) {
     throw std::invalid_argument("ERROR -- missing required arguments\n\n");
   }
 
+}
+
+
+void fixBoundaryEdges(pMesh msh, CMeshAdapter* mshAdp) {
+  /*
+  Freezes mesh boundary edges.
+  */
+  EIter iteEdg = M_edgeIter(msh);
+  while ( pEdge edg = EIter_next(iteEdg) ) {
+    if ( edg->nbrFaces() == 1 ) mshAdp->setConstraint(edg);
+  }
+  EIter_delete(iteEdg);
 }
 
 
@@ -373,6 +391,11 @@ int main(int argc, char* argv[]) {
   LogSField *logFld = buildLogSField(msh, maxgrad, maxani, maxlength, minlength);
   CMeshAdapter *mshAdp = buildCMeshAdapter(msh, logFld);
   std::cout << "DEBUG -- built logsfield and cmeshadapter\n";
+
+  // fix boundary edges
+  if (options["freeze"] == "true") {
+    fixBoundaryEdges(msh, mshAdp);
+  }
 
   // build SolAtElements
   // create geometry
