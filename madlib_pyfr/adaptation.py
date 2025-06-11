@@ -258,46 +258,10 @@ class Adapter:
             + gmsh_file_content[i_0:i_n + 1]
             + adapted_gmsh_file_content[i_0:]
         )
-        # make nodes number contiguous
-        self.reorder_nodes(adapted_gmsh_file_content)
         # update adapted file content
         with open(adapted_gmsh_file, 'w') as ftw:
             ftw.write("\n".join(adapted_gmsh_file_content) + "\n")
         return adapted_gmsh_file
-
-    def reorder_nodes(self, mesh_file_content: list[str]):
-        """
-        Makes the node index contiguous and update the elements accordingly.
-
-        Note: this is required by PyFR with point sampling.
-        """
-        # read mesh
-        for idx, line in enumerate(mesh_file_content):
-            if line.strip() == "$Nodes":
-                node_idx = idx
-            elif line.strip() == "$EndNodes":
-                end_node_idx = idx
-            elif line.strip() == "$Elements":
-                elt_idx = idx
-            elif line.strip() == "$EndElements":
-                end_elt_idx = idx
-        # get number of nodes and ids
-        id_nodes = {n.strip().split()[0]: str(idx + 1)
-                    for idx, n in enumerate(mesh_file_content[node_idx + 2:end_node_idx])}
-        # update node ids
-        for idx, line in enumerate(mesh_file_content[node_idx + 2:end_node_idx]):
-            new_line = " ".join([str(idx + 1)] + line.strip().split()[1:])
-            mesh_file_content[node_idx + 2 + idx] = new_line
-        # update element node ids
-        for idx, line in enumerate(mesh_file_content[elt_idx + 2:end_elt_idx]):
-            # nb node in the current line
-            nb_node = (len(line.strip().split())
-                       - (3 + int(line.strip().split()[2])))
-            # compute new nodes ids
-            new_nodes_id = [id_nodes[nid] for nid in line.strip().split()[-nb_node:]]
-            # update line
-            new_line = " ".join(line.strip().split()[:-nb_node] + new_nodes_id)
-            mesh_file_content[elt_idx + 2 + idx] = new_line
 
     @time_function
     def resample_pyfr(
