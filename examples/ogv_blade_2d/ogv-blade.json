@@ -1,0 +1,51 @@
+{
+    "mode": "average",
+    "msh_file": "ogv-blade.msh",
+    "outdir": "output-MEAN/out",
+    "madlibexe": "../../../MAdLib/trunk/build/Testcases/2dIncCylinder",
+    "vtkexe": "../../../MAdLib/trunk/build/Testcases/VTKProcessor",
+    "pyfr": {
+        "options": {
+            "-b": "cuda"
+        },
+        "ini_file": "ogv-blade.ini",
+        "t0": 10.0,
+        "tf": 12.5,
+        "dt": [5e-6],
+        "dt_sol": 0.25,
+        "K": 10,
+        "extra_dt": 5,
+        "extra_dt_sol": 0.25,
+        "ftt": 42000,
+        "interpolation_lines": {
+            "nb_pts": 100,
+            "input_line": [[-0.02, -0.02778], [-0.02, 0.01261]],
+            "output_line": [[0.087, 0.0], [0.087, 4.039e-2]]
+        },
+        "statistical_criteria_": {
+            "max_ftt": 10,
+            "files": ["QoI.csv"],
+            "keys": [["MixedOutLossCoefficient"]],
+            "criteria": 1
+        }
+    },
+    "madlib": {
+        "options": {
+            "--maxgrad": "1.1",
+            "--metric": "mean",
+            "--freeze": ""
+        },
+        "timeout": 10.0,
+        "cmp_factor": 1.0
+    },
+    "mesh_config": {
+        "domain": {
+            "extrusion_layers": 0,
+            "extrusion_size": 1.4e-2,
+            "outlet": 6.3e-2
+        },
+        "mesh": {},
+        "boundary_layer": {},
+        "wake": {}
+    }
+}
