@@ -80,7 +80,7 @@ mkdir MAdLib && cd MAdLib
 svn co https://svn.cenaero.be/MAdLib/trunk
 ```
 
-To compile MAdLib with VTK, `CMakeLists.txt` should be edited to contain the following lines:
+To compile MAdLib with VTK, `CMakeLists.txt` in `MAdLib-PyFR/madlib` was edited to contain the following lines:
 ```txt
 # ----- VTK -----
 # Set the path to the VTK folder
@@ -110,12 +110,12 @@ endif()
 ...
 ```
 
-Such modified version of `CMakeLists.txt` is available in `MAdLib-PyFR/madlib`:
+It can be copied to MAdLib's trunk:
 ```sh
 cp ../MAdLib-PyFR/madlib/CMakeLists.txt trunk/
 ```
 
-The path to the VTK build dir can be set to the user's path: `set(VTK_DIR "/path/to/vtk/build")`.
+⚠️ **Warning**: in `CMakeLists.txt`, the path to the VTK build dir **must be set** to the user's path by updating `set(VTK_DIR "/path/to/vtk/build")`.
 
 As part of its build, MAdLib also compiles all testcases which contain our custom adaptation scripts. One way to proceed is to implement an adaptation script for each use-case. Such scripts are written in c++ and available in `MAdLib-PyFR/madlib/Testcases`. Their existence is specified line 7 of `Testcases/CMakeLists.txt`.
 
@@ -139,6 +139,8 @@ sudo apt-get install libblas-dev liblapack-dev
 ```
 and go back to the previous building command.
 
+Another possible dependency issue is related to `Boost` as the code won't be able to compile with a version `>=1.72`. A quick fix in that case is to enforce its installation by removing the if condition under `# ----- BOOST Headers -----` in `CMakeLists.txt`.
+
 At that point you should have a working MAdLib install with a bunch of new executables contained in `MAdLib/trunk/build/Testcases/`. 
 
 💡 **Tip**: assuming that no modification is made to MAdLib's core code, all Testcases code can directly be recompiled via the `make install` command. This will automatically update the corresponding executables.
@@ -147,7 +149,7 @@ At that point you should have a working MAdLib install with a bunch of new execu
 ```sh
 svn co https://svn.cenaero.be/MAdLib/branches/PeriodicAdaptation.29.01.2025
 ```
-In this case, the `CMakeLists.txt` should be modified accordingly.
+In this case, the `CMakeLists.txt` should be modified manually.
 
 ### PyFR
 Let us first go back to the working directory:
@@ -180,7 +182,6 @@ pip install "git+https://github.com/PyFR/PyFR.git@develop"
 This last command installs the `develop` branch of PyfR which contains necessary features unavailable in `master` (as of June 2025) and various Python packages also useful to the adaptation framework.
 
 ### MAdLib-PyFR
-
 Assuming that the user still is in the Python virtual environment previously built, the framework and its dependencies can now be installed:
 ```sh
 pip install -e .
