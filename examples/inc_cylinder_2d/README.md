@@ -1,5 +1,4 @@
 # 2D Incompressible Cylinder
-
 This example comes from PyFR's original example (see [here](https://pyfr.readthedocs.io/en/latest/examples.html#d-incompressible-cylinder-flow)).
 
 It has the following characteristics:
@@ -8,7 +7,6 @@ It has the following characteristics:
 - the Reynolds number is 200.
 
 ## Getting started
-
 This use-case can be executed with the following steps:
 
 First, move to the example directory:
@@ -140,7 +138,7 @@ python3 cylinder_adap.py --config inc-cylinder.json --mesh inc-cylinder.msh --so
 
 📝 **Note**: as stated by `"t0": 50.0`, this adaptation procedure starts from the 50th solution timestamp of the first order reference solution.
 
-By changing the configuration file mode from `"APC"` to `"average"`, by setting `"outdir"` to `"output-MEAN"`, `"extra_dt"` to `57.0`, the same configuration file can be used to perform an adaptation with metric-field mean integration.
+By changing the configuration file mode from `"APC"` to `"average"`, by setting `"outdir"` to `"output-MEAN"`, `"extra_dt"` to `57.0`, and `"cmp_factor"` to `1.0` the same configuration file can be used to perform an adaptation with metric-field mean integration.
 
 ![Inc Cylinder MEAN](../../docs/Figs/cylinder-MEAN-velocity.gif)
 
@@ -158,13 +156,14 @@ Finally, the last figure portrays the global convergence history that compares t
 
 It is also worth mentioning that all adaptation procedure come with their own cost. For a workstation equipped with a GeForce RTX 3050 GPU, estimates of the computational cost are given in the table below:
 
-| Adaptation type | Execution time (sec.) |
-|-----------------|-----------------------|
-| instantaneous | 1153 |
-| averaged (mean) | 321 |
-| automatic (mean) | 617 |
+| Adaptation type | Execution time (sec.) | Simulated time (time units) |
+|-----------------|-----------------------|-----------------------|
+| vanilla PyFR (P3) | 349 | 0 -> 110 |
+| instantaneous (P1) | 1153 | 0 -> 110 |
+| averaged (mean, P1) | 321 | 50 -> 110 |
+| automatic (mean, P1) | 617 | 50 -> 126 |
 
-⚠️ **Warning**: as simulated times are not exactly the same for all three experiments, these estimates should be treated with caution.
+As the simulated times are not exactly the same for all three experiments, and the adaptation configurations are not optimal, these estimates should be treated with caution. However the results clearly suggest that for this use-case, it is better to compute a 3rd order solution with a coarse mesh than to use adaptation starting off with a P1 fine mesh.
 
 The computational cost per task for each approach is illustrated on the following figures:
 
